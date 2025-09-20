@@ -4,6 +4,7 @@
 REPO_PATH="/Users/ja20465253/Documents/repos/Daily-practice"
 cd "$REPO_PATH" || { echo "❌ Repo path not found!"; exit 1; }
 
+
 # Create a list of realistic commit messages
 commit_messages=(
     "Update deployment script"
