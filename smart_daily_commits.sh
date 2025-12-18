@@ -1,45 +1,54 @@
 #!/bin/bash
 
-# Set your actual repo path
-REPO_PATH="/Users/ja20465253/Documents/repos/Daily-practice"
-cd "$REPO_PATH" || { echo "❌ Repo path not found!"; exit 1; }
+# ================= CONFIG =================
+REPO_PATH="/Users/vicky/Documents/Git-Repos/Daily-practice"
+BRANCH="main"
+LOG_DIR="logs"
+LOG_FILE="$LOG_DIR/daily_log.txt"
 
-# Create a list of realistic commit messages
+export PATH="/usr/bin:/bin:/usr/local/bin"
+
+cd "$REPO_PATH" || exit 1
+mkdir -p "$LOG_DIR"
+
+# ================= DAY BASED COMMIT COUNT =================
+DAY=$(date +%u)   # 1=Mon ... 7=Sun
+
+case $DAY in
+  1) COMMITS=5 ;;   # Monday
+  2) COMMITS=20 ;;  # Tuesday
+  3) COMMITS=24 ;;  # Wednesday
+  4) COMMITS=32 ;;  # Thursday
+  5) COMMITS=45 ;;  # Friday
+  6) COMMITS=15 ;;  # Saturday
+  7) exit 0 ;;      # Sunday → NO commits
+esac
+
+# ================= COMMIT MESSAGES =================
 commit_messages=(
-    "Update deployment script"
-    "Refactor logging module"
-    "Improve error handling"
-    "Update README with latest info"
-    "Add new environment variables"
-    "Fix typo in documentation"
-    "Optimize build process"
-    "Add debug logs"
-    "Update changelog"
-    "Improve script comments"
+  "Daily practice update"
+  "Minor refactor"
+  "Improve logging"
+  "Update documentation"
+  "Cleanup scripts"
+  "Maintenance update"
+  "Fix small typo"
+  "Config update"
 )
 
-# Create or rotate dummy files
-file_prefix="update_log"
-mkdir -p logs
-
-# Loop to make 50 commits
-for i in {1..50}
+# ================= MAKE COMMITS =================
+for ((i=1; i<=COMMITS; i++))
 do
-    file="logs/${file_prefix}_$((i % 10)).txt"
-    echo "Log entry $i on $(date)" >> "$file"
+  timestamp=$(date "+%Y-%m-%d %H:%M:%S")
 
-    git add "$file"
+  echo "Update $i at $timestamp" >> "$LOG_FILE"
+  git add "$LOG_FILE"
 
-    # Pick a random commit message
-    msg=${commit_messages[$RANDOM % ${#commit_messages[@]}]}
-    git commit -m "$msg #$i"
+  msg=${commit_messages[$((RANDOM % ${#commit_messages[@]}))]}
+  git commit -m "$msg ($i/$COMMITS)"
 
-    # Random delay between 1–5 seconds
-    sleep $((RANDOM % 5 + 1))
+  sleep 1
 done
 
-# Push all commits
-git push origin main  # Change 'main' to your branch name if needed
-
-echo "✅ 50 smart commits pushed successfully!"
+git push origin "$BRANCH"
 
