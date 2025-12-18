@@ -7,5 +7,6 @@ then
 else
     echo "installing ngin ..!"
     dnf install nginx -y  
+fi
 
 
