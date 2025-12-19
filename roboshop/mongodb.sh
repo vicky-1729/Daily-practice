@@ -38,3 +38,15 @@ VALIDATE $? "copying the mongo repo to /etc/yum.repos.d/mongo.repo"
 
 dnf install mongodb-org -y &>> $LOGFILE
 VALIDATE $? "mongodb installation"
+
+systemctl enable mongod
+VALIDATE $? "enabling mongod"
+
+systemctl start mongod
+VALIDATE $? "started mongod"
+
+sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf
+VALIDATE $? "mongodb confugiration set 127.0.0.1 --> 0.0.0.0"
+
+systemctl restart mongod 
+VALIDATE $? "restarted mongod"
