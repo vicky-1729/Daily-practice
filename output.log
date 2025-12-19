@@ -1,0 +1,4 @@
+usage: cut -b list [-n] [file ...]
+       cut -c list [file ...]
+       cut -f list [-s] [-w | -d delim] [file ...]
+vicky
