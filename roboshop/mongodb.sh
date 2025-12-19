@@ -9,7 +9,7 @@ Y="\e[33m"
 N="\e[0m"
 
 LOGS_FOLDER="/var/log/roboshop-logs"
-FILENAME= $(echo $0 | cut -d "." f1)
+FILENAME=$(echo $0 | cut -d "." -f1)
 LOGFILE="$LOGS_FOLDER/$FILENAME.log"
 
 mkdir -p $LOGS_FOLDER
