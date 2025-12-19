@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOTUSER=$(su -i)
+ROOTUSER=$(id -u)
 
 if [ $ROOTUSER -ne 0 ];
     then
