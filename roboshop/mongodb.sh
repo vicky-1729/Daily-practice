@@ -36,19 +36,19 @@ fi
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copying the mongo repo to /etc/yum.repos.d/mongo.repo"
 
-dnf install mongodb-org -y &>> $LOGFILE
+dnf install mongodb-org -y | tee -a $LOGFILE
 VALIDATE $? "mongodb installation"
 
-systemctl enable mongod
+systemctl enable mongod &>> $LOGFILE
 VALIDATE $? "enabling mongod"
 
-systemctl start mongod
+systemctl start mongod &>> $LOGFILE
 VALIDATE $? "started mongod"
 
-sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf
+sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>> $LOGFILE
 VALIDATE $? "mongodb confugiration set 127.0.0.1 --> 0.0.0.0"
 
-systemctl restart mongod 
+systemctl restart mongod &>> $LOGFILE
 VALIDATE $? "restarted mongod"
 
 # checking the status of lntp 
