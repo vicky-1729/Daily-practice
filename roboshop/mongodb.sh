@@ -8,6 +8,12 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+LOGS_FOLDER="/var/log/roboshop-logs"
+FILENAME= $(echo $0 | cut -d "." f1)
+LOGFILE="$LOGS_FOLDER/$FILENAME.log"
+
+mkdir -p $LOGS_FOLDER
+echo "script was executing at :$(date)" | tee -a $LOGFILE
 #checking the root user
 if [ $ROOTUSER -ne 0 ];
     then
@@ -29,3 +35,6 @@ fi
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "copying the mongo repo to /etc/yum.repos.d/mongo.repo"
+
+dnf install mongodb-org -y 
+VALIDATE $? "mongodb installtion "
