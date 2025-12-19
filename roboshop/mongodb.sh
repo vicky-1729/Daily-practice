@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ROOTUSER=$(su -i)
 
 if [ $ROOTUSER -ne 0 ];
@@ -7,3 +9,5 @@ then
 else
     echo "your are sudo user moving further..!"
 fi
+
+dnf list installed nginx -y
