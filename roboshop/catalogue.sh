@@ -1,10 +1,10 @@
 #!/bin/bash
 
 #colors
-r='\e[32m'
-g='\e[33m'
+r='\e[31m'
+g='\e[32m'
 w='\e[0m'
-y='\e[34m'
+y='\e[33m'
 
 #check root user or not
 root_user=$(id -u)
@@ -45,8 +45,14 @@ validation $? "enabling the nodejs:20 module"
 dnf install nodejs -y &>>$LOG_FILE
 validation $? "nodejs installation"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
-validation $? "roboshop user creation"
+id roboshop  
+if [ $? -ne 0 ]
+then 
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+    validation $? "roboshop user creation"
+else 
+    echo "roboshop user is created alreday skipping"
+fi
 
 mkdir -p /app &>>$LOG_FILE
 validation $? "creating app directory ..for catalogue"
