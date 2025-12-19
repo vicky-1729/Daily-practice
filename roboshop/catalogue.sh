@@ -72,3 +72,5 @@ validating $? "system enable"
 
 systemctl start catalogue &>>$LOG_FILE
 validating $? "system start"
+
+
