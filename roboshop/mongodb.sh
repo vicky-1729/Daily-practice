@@ -1,0 +1,1 @@
+ROOTUSER=$(su -i)
