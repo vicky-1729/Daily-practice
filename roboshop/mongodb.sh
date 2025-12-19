@@ -52,4 +52,4 @@ systemctl restart mongod
 VALIDATE $? "restarted mongod"
 
 # checking the status of lntp 
-netstat -lntp 
+# netstat -lntp 
