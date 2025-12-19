@@ -1,55 +1,61 @@
 #!/bin/bash
 
-ROOTUSER=$(id -u)
-# adding colors for best view
+USERID=$(id -u)
 
+# Colors
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+# Logs
 LOGS_FOLDER="/var/log/roboshop-logs"
-FILENAME=$(echo $0 | cut -d "." -f1)
-LOGFILE="$LOGS_FOLDER/$FILENAME.log"
+SCRIPT_NAME=$(basename "$0" .sh)
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
-mkdir -p $LOGS_FOLDER
-echo "script was executing at :$(date)" | tee -a $LOGFILE
-#checking the root user
-if [ $ROOTUSER -ne 0 ];
-    then
-        echo -e "$R please run with sudo acess $N"
-        exit 1;
-    else
-        echo -e "$G your are sudo user moving further..! $N "
+mkdir -p "$LOGS_FOLDER"
+echo "Script started executing at: $(date)" | tee -a "$LOG_FILE"
+
+# Root user check
+if [ "$USERID" -ne 0 ]; then
+    echo -e "$R ERROR:: Please run this script with root access $N" | tee -a "$LOG_FILE"
+    exit 1
+else
+    echo -e "$G You are running with root access $N" | tee -a "$LOG_FILE"
 fi
 
-VALIDATE(){
- if [ $1 -eq 0 ]
-    then
-    echo -e " $2 is $G success $N"
+# Validation function
+VALIDATE() {
+    if [ "$1" -eq 0 ]; then
+        echo -e "$2 ... $G SUCCESS $N" | tee -a "$LOG_FILE"
     else
-    echo -e " $2 is $R failed $N"
-fi
+        echo -e "$2 ... $R FAILURE $N" | tee -a "$LOG_FILE"
+        exit 1
+    fi
 }
 
+# Copy MongoDB repo
+cp mongo.repo /etc/yum.repos.d/mongodb.repo &>>"$LOG_FILE"
+VALIDATE $? "Copying MongoDB repo"
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "copying the mongo repo to /etc/yum.repos.d/mongo.repo"
+# Install MongoDB
+dnf install mongodb-org -y &>>"$LOG_FILE"
+VALIDATE $? "Installing MongoDB server"
 
-dnf install mongodb-org -y | tee -a $LOGFILE
-VALIDATE $? "mongodb installation"
+# Enable MongoDB
+systemctl enable mongod &>>"$LOG_FILE"
+VALIDATE $? "Enabling MongoDB"
 
-systemctl enable mongod &>> $LOGFILE
-VALIDATE $? "enabling mongod"
+# Start MongoDB
+systemctl start mongod &>>"$LOG_FILE"
+VALIDATE $? "Starting MongoDB"
 
-systemctl start mongod &>> $LOGFILE
-VALIDATE $? "started mongod"
+# Allow remote connections
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf &>>"$LOG_FILE"
+VALIDATE $? "Configuring MongoDB for remote connections"
 
-sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mongod.conf &>> $LOGFILE
-VALIDATE $? "mongodb confugiration set 127.0.0.1 --> 0.0.0.0"
+# Restart MongoDB
+systemctl restart mongod &>>"$LOG_FILE"
+VALIDATE $? "Restarting MongoDB"
 
-systemctl restart mongod &>> $LOGFILE
-VALIDATE $? "restarted mongod"
-
-# checking the status of lntp 
-# netstat -lntp 
+echo -e "$Y MongoDB setup completed successfully $N" | tee -a "$LOG_FILE"
