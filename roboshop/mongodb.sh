@@ -23,6 +23,7 @@ VALIDATE(){
     echo -e " $2 is $G successfully $N"
     else
     echo -e " $2 is $R failed $N"
+fi
 }
 
 
