@@ -50,3 +50,6 @@ VALIDATE $? "mongodb confugiration set 127.0.0.1 --> 0.0.0.0"
 
 systemctl restart mongod 
 VALIDATE $? "restarted mongod"
+
+# checking the status of lntp 
+netstat -lntp 
