@@ -1,31 +1,31 @@
 #!/bin/bash
+
 root_user=$(id -u)
-package=(nginx,python,java,httpd)
+packages=(nginx python java httpd)
+LOGFILE="/tmp/package_install.log"
 
-
-
-validation(){
-if [ $1 -eq 0]
-    then
-    echo "installed succesfully"
-    else 
-    echo "not installed ..!"
-    exit 1;
-fi
-}
-#checking root user
-if [ ${root_user} -ne 0]
-    then
-    echo "run sudo user"
-    exit 1;
+validation() {
+    if [ $1 -eq 0 ]; then
+        echo "$2 installed successfully"
     else
-    dnf list installed ${package}
-        if [ $? -eq 0]
-            then 
-                echo "already installed ${package}..!"
-            else 
-                echo "installing ${package}..!"
-                dnf install ${package} -y | tee -a ${FILEPATH}
-                validation $? ${package}
-        fi
+        echo "$2 not installed..!"
+        exit 1
+    fi
+}
+
+# Checking for root user
+if [ ${root_user} -ne 0 ]; then
+    echo "Please run as root or with sudo."
+    exit 1
 fi
+
+for pkg in "${packages[@]}"; do
+    dnf list installed "$pkg" &>/dev/null
+    if [ $? -eq 0 ]; then
+        echo "$pkg is already installed."
+    else
+        echo "Installing $pkg..."
+        dnf install "$pkg" -y | tee -a "$LOGFILE"
+        validation $? "$pkg"
+    fi
+done
