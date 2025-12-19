@@ -20,7 +20,7 @@ fi
 VALIDATE(){
  if [ $1 -eq 0 ]
     then
-    echo -e " $2 is $G successfully $N"
+    echo -e " $2 is $G success $N"
     else
     echo -e " $2 is $R failed $N"
 fi
