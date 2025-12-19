@@ -33,6 +33,7 @@ validation(){
         echo -e "$2 is $g success..! $w"
     else
         echo "$2 is $r failure ...! $w"
+    fi
 }
 
 dnf module disable nodejs -y &>>$LOG_FILE
