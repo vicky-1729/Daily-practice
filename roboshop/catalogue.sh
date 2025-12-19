@@ -66,12 +66,12 @@ cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service &>>$LOG_F
 validation $? "configuration file installation"
 
 systemctl daemon-reload &>>$LOG_FILE
-validating $? "system-reloading"
+validation $? "system-reloading"
 
 systemctl enable catalogue &>>$LOG_FILE
-validating $? "system enable"
+validation $? "system enable"
 
 systemctl start catalogue &>>$LOG_FILE
-validating $? "system start"
+validation $? "system start"
 
 
