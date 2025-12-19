@@ -35,28 +35,40 @@ validation(){
         echo "$2 is $r failure ...! $w"
 }
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$LOG_FILE
 validation $? "disabling the node js module"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$LOG_FILE
 validation $? "enabling the nodejs:20 module"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$LOG_FILE
 validation $? "nodejs installation"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
 validation $? "roboshop user creation"
 
-mkdir -p /app 
+mkdir -p /app &>>$LOG_FILE
 validation $? "creating app directory ..for catalogue"
 
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 validation $? "downloading catalogue code in temp folder"
 
-cd /app 
-unzip /tmp/catalogue.zip
+cd /app &>>$LOG_FILE
+unzip /tmp/catalogue.zip &>>$LOG_FILE
 validation $? "unzipping the catalogue files /app directory"
 
-npm install 
+npm install &>>$LOG_FILE
 validation $? "npm installation"
+
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service &>>$LOG_FILE
+validation $? "configuration file installation"
+
+systemctl daemon-reload &>>$LOG_FILE
+validating $? "system-reloading"
+
+systemctl enable catalogue &>>$LOG_FILE
+validating $? "system enable"
+
+systemctl start catalogue &>>$LOG_FILE
+validating $? "system start"
