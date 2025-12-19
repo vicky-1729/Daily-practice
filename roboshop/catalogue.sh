@@ -61,6 +61,7 @@ validation $? "creating app directory ..for catalogue"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>>$LOG_FILE
 validation $? "downloading catalogue code in temp folder"
 
+rm -rf /app/*
 cd /app &>>$LOG_FILE
 unzip /tmp/catalogue.zip &>>$LOG_FILE
 validation $? "unzipping the catalogue files /app directory"
