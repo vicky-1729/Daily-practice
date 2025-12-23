@@ -1,6 +1,7 @@
 - name: "Testing"
   hosts: localhost
   connection: local
+  become: yes
   #global or play level variable
   vars:
     user: "vicky"
