@@ -13,28 +13,14 @@
 #command: ansible-playbook -i inventory.inv playbook.yml
 #command: ansible all -i -e ansible_user=ec2-user ansible_password=DevOps321
 
-
-- name: installing all
-  hosts: frontend # connecting to others 
-  tasks:
-  - name: nginx
-    ansible.builtin.package:
-      - name: nginx
-        state: present
-        enabled: yes
-
-- name: installing roboshop
-  hosts: local # connecting to local
+- name: Testing 
+  hosts: local
   connection: local
-  tasks: 
-    - name: nginx installing and enabling 
-      ansible.builtin.package:
-        name: nginx
-        state: present
-    - name: nginx enabling nginx status
-      ansible.builtin.package:
-        name: nginx
-        state: enable
-    
-
+  become: yes
+  tasks:
+    name: "nginx installation"
+    ansible.builtin.debug:
+      name : nginx
+      state: present
+      
 
