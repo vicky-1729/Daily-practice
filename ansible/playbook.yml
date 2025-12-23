@@ -1,19 +1,23 @@
 - name: "Testing"
-  hosts: ansible-node
+  hosts: localhost
+  connection: local
+  #global or play level variable
+  vars:
+    user: "vicky"
+  vars_files:
+    - vars.yaml
+  vars_prompt:
+    - name: user
+      prompt: "please enter username"
+      private: true
   tasks:
-    - name: "nginx installation"
+    - name: installation nginx
       ansible.builtin.package:
         name: nginx
         state: present
-
-
-
-# - name: nginx
-#   hosts: local/anyserver
-#   connection: local
-#   become: yes
-#   tasks:
-#     - name: "nginx installation"
-#       ansible.builtin.package:
-#        - name: nginx
-#        - state: present
+    - name: shows varaibles
+      # local or task level variable
+      vars:
+        user: "vicky"
+      ansible.builtin.debug:
+        msg: "user name: {{ user }}"
