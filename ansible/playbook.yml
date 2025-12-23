@@ -1,7 +1,5 @@
 - name: "Testing"
-  hosts: local
-  connection: local
-  become: yes
+  hosts: ansible-node
   tasks:
     - name: "nginx installation"
       ansible.builtin.package:
