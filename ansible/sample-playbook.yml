@@ -13,6 +13,7 @@
 #command: ansible-playbook -i inventory.inv playbook.yml
 #command: ansible all -i -e ansible_user=ec2-user ansible_password=DevOps321
 
+
 - name: installing all
   hosts: frontend # connecting to others 
   tasks:
