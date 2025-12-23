@@ -1,26 +1,12 @@
-# - name: install all
-#   hosts: local
-#   connection: local
-#   tasks:
-#       ansible.builtin.package:
-#         state: present
-#         state: installed
-
-# playbooks: it is like conating the some set of tasks to run in remote server it is yaml 
-#adohc commands are like one tim exectuble for this you dont need to write mutiple times
-# ansible installed in one server thenk it is ansbile server..we xan can control other servers here 
-# invetory is file that hold will all inforomation about remote connection details
-#command: ansible-playbook -i inventory.inv playbook.yml
-#command: ansible all -i -e ansible_user=ec2-user ansible_password=DevOps321
-
 - name: Testing 
   hosts: local
   connection: local
   become: yes
   tasks:
-    name: "nginx installation"
-    ansible.builtin.debug:
-      name : nginx
-      state: present
-      
+    - name: "nginx installation"
+      ansible.builtin.debug:
+        msg: "nginx is installling....! boss"
+        name : nginx
+        state: present
+
 
