@@ -5,7 +5,7 @@
 
   - name: adding mongo repo to server
     ansible.builtin.copy:
-      src: /Daily-practice/ansible-roboshop/mongo.repo
+      src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
 
   - name: installing the mongod server
