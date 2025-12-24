@@ -1,111 +1,82 @@
-- name: Catalogue service installation
+- name: installation of catalogue server
   hosts: catalogue
   become: yes
-  vars:
-    app_user: roboshop
-    app_home: /app
-    service_unit: /etc/systemd/system/catalogue.service
-
   tasks:
-    - name: Ensure Node.js module is disabled by default
-      community.general.dnf_module:
-        name: nodejs
-        state: disabled
+  
+  - name: disabling default nodejs module
+    ansible.builtin.command: dnf module disable nodejs
 
-    - name: Enable Node.js 20 module
-      community.general.dnf_module:
-        name: nodejs
-        stream: "20"
-        state: enabled
+  - name: enable nodejs 20 module
+    ansible.builtin.command: dnf module enable nodejs:20
 
-    - name: Install Node.js runtime
-      ansible.builtin.dnf:
-        name: nodejs
-        state: present
+  - name: installing the nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+  - name: create a system user
+    ansible.builtin.user:
+      name: roboshop
+      system: true
+      shell: /sbin/nologin
+      home: /app
 
-    - name: Ensure application user exists
-      ansible.builtin.user:
-        name: "{{ app_user }}"
-        system: true
-        shell: /sbin/nologin
-        home: "{{ app_home }}"
+  - name: create a directory 
+    ansible.builtin.file: 
+      path: /app
+      state: directory
+ 
+  - name: download the catalogue url
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+      dest: /tmp/catalogue.zip
+      
+  - name: extract catalogue code
+    ansible.builtin.unarchive:
+      src: /tmp/catalogue.zip
+      dest: /app
+      remote_src: yes
 
-    - name: Create application directory
-      ansible.builtin.file:
-        path: "{{ app_home }}"
-        state: directory
-        owner: "{{ app_user }}"
-        group: "{{ app_user }}"
-        mode: "0755"
+  - name: node modules installation
+    community.general.npm:
+      path: /app
 
-    - name: Download catalogue artifact
-      ansible.builtin.get_url:
-        url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
-        dest: /tmp/catalogue.zip
-        mode: "0644"
+  - name: copying the service conifguration
+    ansible.builtin.copy:
+      src: catalogue.service
+      dest: /etc/systemd/system/catalogue.service
 
-    - name: Extract catalogue code
-      ansible.builtin.unarchive:
-        src: /tmp/catalogue.zip
-        dest: "{{ app_home }}"
-        remote_src: true
-        owner: "{{ app_user }}"
-        group: "{{ app_user }}"
-        extra_opts:
-          - --strip-components=1
-      args:
-        creates: "{{ app_home }}/package.json"
+  - name: configuring catalogue service
+    ansible.builtin.systemd:
+      name: catalogue
+      daemon_reload: true
 
-    - name: Install production node modules
-      community.general.npm:
-        path: "{{ app_home }}"
-        production: true
-      become_user: "{{ app_user }}"
+  - name: start and enable service
+    ansible.builtin.service:
+      name: catalogue
+      state: started
+      enabled: yes
 
-    - name: Deploy catalogue service unit
-      ansible.builtin.copy:
-        src: catalogue.service
-        dest: "{{ service_unit }}"
-        owner: root
-        group: root
-        mode: "0644"
+  - name: copy mongodb repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
 
-    - name: Reload systemd catalog
-      ansible.builtin.systemd:
-        daemon_reload: true
+  - name: install mongodb client
+    ansible.builtin.dnf:
+      name: mongodb-mongosh
+      state: present
 
-    - name: Ensure catalogue service is running
-      ansible.builtin.service:
-        name: catalogue
-        state: started
-        enabled: true
+  - name: check products loaded or not
+    ansible.builtin.command: mongosh --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+    register: catalogue_output
 
-    - name: Deploy MongoDB repo file
-      ansible.builtin.copy:
-        src: mongo.repo
-        dest: /etc/yum.repos.d/mongo.repo
-        owner: root
-        group: root
-        mode: "0644"
+  - name: print catalogue output
+    ansible.builtin.debug:
+      msg: "{{ catalogue_output }}"
 
-    - name: Install MongoDB client tools
-      ansible.builtin.dnf:
-        name: mongodb-mongosh
-        state: present
-
-    - name: Check if catalogue data exists
-      ansible.builtin.command:
-        cmd: mongosh --quiet --host mongodb.daws84s.site --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
-      register: catalogue_output
-      changed_when: false
-      failed_when: catalogue_output.rc != 0
-
-    - name: Load catalogue data
-      ansible.builtin.shell:
-        cmd: mongosh --quiet --host mongodb.daws84s.site < db/master-data.js
-        chdir: "{{ app_home }}"
-      when: (catalogue_output.stdout | trim | int) < 0
-
+  - name: load products
+    ansible.builtin.shell: mongosh --host mongodb.daws84s.site < /app/db/master-data.js
+    when: catalogue_output.stdout | int < 0
 
 
   
