@@ -1,33 +1,65 @@
+# - name: mongodb server installation
+#   hosts: mongodb
+#   become: yes
+#   tasks:
+
+#   - name: adding mongo repo to server
+#     ansible.builtin.copy:
+#       src: mongo.repo
+#       dest: /etc/yum.repos.d/mongo.repo
+
+#   - name: installing the mongod server
+#     ansible.builtin.dnf:
+#       name: mongodb-org
+#       state: present
+
+#   - name: start and enable the service
+#     ansible.builtin.service:
+#       name: mongod
+#       state: started
+#       enabled: yes
+
+#   - name: allowing the remote connection
+#     ansible.builtin.replace:
+#       path: /etc/mongod.conf
+#       regexp: '127.0.0.1'
+#       replace: '0.0.0.0'
+
+#   - name: restart the server
+#     ansible.builtin.service:
+#       name: mongod
+#       state: restarted
+
+
 - name: mongodb server installation
   hosts: mongodb
   become: yes
   tasks:
+    - name: repo copy to mongodb server
+      ansible.builtin.copy:
+        src: mongo.repo
+        dest: /etc/yum.repos.d/mongo.repo
+    
+    - name: installing mongodb server
+      ansible.builtin.package:
+        name: mongodb-org
+        state: present
 
-  - name: adding mongo repo to server
-    ansible.builtin.copy:
-      src: mongo.repo
-      dest: /etc/yum.repos.d/mongo.repo
+    - name: allowing remote configuration
+      ansible.builtin.replace:
+        path: /etc/mongod.conf
+        regexp: '127.0.0.1'
+        replace: '0.0.0.0'
+      notify: restart mongod
+        
+    - name: start and enable mongodb
+      ansible.builtin.service:
+        name: mongod
+        state: started
+        enabled: yes
 
-  - name: installing the mongod server
-    ansible.builtin.dnf:
-      name: mongodb-org
-      state: present
-
-  - name: start and enable the service
-    ansible.builtin.service:
-      name: mongod
-      state: started
-      enabled: yes
-
-  - name: allowing the remote connection
-    ansible.builtin.replace:
-      path: /etc/mongod.conf
-      regexp: '127.0.0.1'
-      replace: '0.0.0.0'
-
-  - name: restart the server
-    ansible.builtin.service:
-      name: mongod
-      state: restarted
-
-
+  handlers:
+    - name: restart mongod
+      ansible.builtin.service:
+        name: mongod
+        state: restarted
