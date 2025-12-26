@@ -1,3 +1,9 @@
+
+- name: copying the service conifguration
+  ansible.builtin.copy:
+    src: catalogue.service.j2
+    dest: /etc/systemd/system/catalogue.service
+
 - name: start and enable service
   ansible.builtin.service:
     name: catalogue
@@ -10,4 +16,3 @@
     daemon_reload: true
   tag:
     - name: conf-reload #only this part only running if we use tags
-    

@@ -1,22 +1,8 @@
-- name:
-    include_role:
-      name: app-setup
-- name:
-  include_role: 
-    name: nodejs
+- name: Include common app setup
+  ansible.builtin.import_tasks: ../../common/app-setup.yaml
 
-- name: copying the service conifguration
-  ansible.builtin.copy:
-    src: catalogue.service.j2
-    dest: /etc/systemd/system/catalogue.service
-
-- name: configuring catalogue service
-  ansible.builtin.systemd:
-    name: catalogue
-    daemon_reload: true
-  tag:
-    - name: conf-reload
-
+- name: Include common nodejs setup
+  ansible.builtin.import_tasks: ../../common/nodejs.yaml
 
 - name: copy mongodb repo
   ansible.builtin.copy:
@@ -34,16 +20,11 @@
 
 - name: print catalogue output
   ansible.builtin.debug:
-    msg: "{{ catalogue_output }}"
+    msg: "{{ catalogue_output.stdout }}"
 
 - name: load products
   ansible.builtin.shell: mongosh --host mongodb.daws84s.site < /app/db/master-data.js
-  when: catalogue_output.stdout | int < 0
-
-- name: we are using the registers
-  ansible.builtin.debug:
-  msg: {{ ls -ltr }}
-  rgister: output
+  when: (catalogue_output.stdout | int) < 0
 
 
 
