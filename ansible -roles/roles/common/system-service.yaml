@@ -1,0 +1,13 @@
+- name: start and enable service
+  ansible.builtin.service:
+    name: catalogue
+    state: started
+    enabled: yes
+
+- name: configuring catalogue service
+  ansible.builtin.systemd:
+    name: catalogue
+    daemon_reload: true
+  tag:
+    - name: conf-reload #only this part only running if we use tags
+    
