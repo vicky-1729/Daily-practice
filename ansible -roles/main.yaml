@@ -1,5 +1,0 @@
-- name: install catalogue server
-  hosts: catalogue
-  become: yes
-  roles:
-    - name : catalogue
