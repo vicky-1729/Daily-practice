@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # ================= CONFIG =================
 REPO_PATH="/Users/vicky/Documents/Git-Repos/Daily-practice"
 BRANCH="main"
