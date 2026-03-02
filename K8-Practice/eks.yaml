@@ -9,6 +9,6 @@ metadata:
 # Managed node group configuration
 managedNodeGroups:
   - name: roboshop                    # Node group name
-    instanceTypes: ["m5.large", "c3.large","c4.large","c5.large"]  # EC2 instance types for worker nodes
-    desiredCapacity: 3                # Number of nodes to launch
+    instanceTypes: ["t3.medium"]  # EC2 instance types for worker nodes
+    desiredCapacity: 2                # Number of nodes to launch
     spot: true                        # Use spot instances for cost savings
