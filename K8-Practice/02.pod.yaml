@@ -1,27 +1,65 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: roboshop-Service
+#   labels:
+#     purpose: service-demo
+# spec:
+#   selector:
+#     env: test
+#     project: roboshop
+#   ports:
+#   - port: 80
+#     targetPort: 80
+#     protocol: TCP  
+  
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata: 
+#   name: nginx
+#   labels: 
+#     env: test
+#     project: roboshop
+# spec:
+#   containers:
+#   - name: nginx
+#     image: nginx
+
+# creating server
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: roboshop-Service
+  name: roboshop
   labels:
     purpose: service-demo
-selector:
-  env: test
-  project: roboshop  
-  
+spec:
+  selector:
+    env: test
+    project: roboshop
+    company: wipro
+  ports:
+    - port: 80 # service port
+      targetPort: 80 # container port 
+      protocol: TCP
 
 
 ---
 
 apiVersion: v1
 kind: Pod
-metadata: 
+metadata:
   name: nginx
-  labels: 
+  labels:
     env: test
     project: roboshop
-spec:
+    company: wipro
+spec: 
   containers:
-  - name: nginx
-    image: nginx
+    - name: nginx
+      image: nginx
+
+
 
 
