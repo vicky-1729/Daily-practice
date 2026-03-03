@@ -1,23 +1,51 @@
+# apiVersion: apps/v1
+# kind: ReplicaSet
+# metadata:
+#   name: replica-pod
+
+# spec:
+#   replicas: 3 # how many pods. you want define here
+#   selector:
+#     matchLabels:
+#       env: test
+#       purpose: replica-demo
+#       project: roboshop
+# #this pod defination
+#   template:
+#     metadata:
+#       labels:
+#         env: test
+#         purpose: replica-demo
+#         project: roboshop
+#     spec:
+#       containers:
+#         - name: nginx
+#           image: nginx
+
+
+#creating replica set
+
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: replica-pod
+  name: replicaPod
 
 spec:
-  replicas: 3 # how many pods. you want define here
+  replicas: 3
   selector:
     matchLabels:
+      purpose: replicademo
       env: test
-      purpose: replica-demo
-      project: roboshop
-#this pod defination
+      component: frontend
+
+# pod defination
   template:
     metadata:
       labels:
+        purpose: replicademo
         env: test
-        purpose: replica-demo
-        project: roboshop
-    spec:
-      containers:
-        - name: nginx
-          image: nginx
+        component: frontend
+  spec:
+    containers:
+    - name: nginx
+      image: nginx:1.24
