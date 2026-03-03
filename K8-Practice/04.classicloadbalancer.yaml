@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: classic-loadbalancer
+  labels:
+    purpose: classic-loadbalancer-demo
+spec:
+  type: LoadBalancer
+  selector:
+    env: test
+    project: roboshop
+    worker: wipro
+
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    purpose: pod-demo
+    env: test
+    project: roboshop
+    worker: wipro
+spec:
+  containers:
+    - name: nginx
+      image: nginx
