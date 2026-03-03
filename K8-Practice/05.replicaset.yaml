@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: replica-pod
+
+spec:
+  replicas: 3 # how many pods. you want define here
+  selector:
+    matchLabels:
+      env: test
+      purpose: replica-demo
+      project: roboshop
+#this pod defination
+  template:
+    metadata:
+      labels:
+        env: test
+        purpose: replica-demo
+        project: roboshop
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
