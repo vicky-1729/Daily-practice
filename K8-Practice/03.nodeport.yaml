@@ -1,5 +1,4 @@
 #service
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -20,6 +19,7 @@ spec:
     protocol: TCP
 
 ---
+# pod
 apiVersion: v1
 kind: Pod
 metadata:
