@@ -1,0 +1,27 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-pod
+  labels:
+    env: deployment-env
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: nginx-pod
+      env: test
+      project: roboshop
+      #pod labels
+  template:
+    metadata:
+      labels:
+        name: nginx-pod
+        env: test
+        project: roboshop
+    spec:
+      containers:
+        - name: nginx-alpine
+          image: nginx:1.29.5-alpine
+
+  
