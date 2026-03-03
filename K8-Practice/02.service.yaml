@@ -27,7 +27,6 @@
 #     image: nginx
 
 # creating server
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -43,10 +42,7 @@ spec:
     - port: 80 # service port
       targetPort: 80 # container port 
       protocol: TCP
-
-
 ---
-
 apiVersion: v1
 kind: Pod
 metadata:
@@ -61,5 +57,7 @@ spec:
       image: nginx
 
 
+ 
+# service in k8 is useful pod to pod communication ,it will keep shows your appliaction to the outside of the world ,it is also. acts as load balancer
 
 
