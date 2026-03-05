@@ -8,4 +8,4 @@ metadata:
     component: catalogue
 spec:
   replicas: 3
-  
+  slector
