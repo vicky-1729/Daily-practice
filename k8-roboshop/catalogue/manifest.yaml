@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  labels:
+    env: dev
+    tier: app
+    component: catalogue
+spec:
+  replicas: 3
+  
