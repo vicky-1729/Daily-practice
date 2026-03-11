@@ -1,11 +1,86 @@
+# configmap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    env: dev
+    tier: app
+    component: catalogue
+data:
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"
+
+# secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    env: dev
+    tier: app
+    component: catalogue
+type: Opaque
+data:
+  user: bW9uZ29kYg==  # mongodb (base64 encoded)
+  password: bW9uZ29kYg==  # mongodb (base64 encoded)
+
+# Deployment 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue
+  namespace: roboshop
   labels:
     env: dev
     tier: app
     component: catalogue
 spec:
   replicas: 3
-  slector
+  selector:
+    matchLabels:
+      env: dev
+      tier: app
+      component: catalogue
+  template:
+    metadata:
+      labels:
+        env: dev
+        tier: app
+        component: catalogue
+    spec:
+      containers:
+        - name: catalogue
+          image: joindevops/catalogue
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          envFrom:
+            - configMapRef:
+                name: catalogue
+---
+# service
+apiVersion: v1
+kind: Service
+metadata: 
+  name: catalogue
+  namespace: roboshop
+  labels:
+    env: dev
+    tier: app
+    component: catalogue
+spec:
+  selector:
+    env: dev
+    tier: app
+    component: catalogue
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+          
