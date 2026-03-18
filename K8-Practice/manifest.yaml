@@ -1,0 +1,138 @@
+#configMap
+apiVersion: v1
+kind: configMap
+metadata:
+  name: catalogue
+  labels:
+    env: test
+    project: roboshop
+    tier: backend
+data:
+  mongodb_url: mongo.vsvicky.site
+
+# sceret
+apiVersion: v1
+kind: Sceret
+metadata:
+  name: catalogue
+  labels:
+    env: test
+    project: roboshop
+    tier: backend   
+type: opaque
+data:
+  username: vsvicky
+  password: vsvicky
+
+
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    env: test
+    project: roboshop
+    tier: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: test
+      project: roboshop
+      tier: backend
+  templates:
+    metadata:
+      labels:
+        env: test
+        project: roboshop
+        tier: backend
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          resources:
+            request:
+              mem:
+              cpu:
+            limits:
+              mem:
+              cpu:
+          envFrom:
+            configMapRef:
+              name: catalogue
+            SceretRef:
+              name: catalogue
+
+
+# normal service
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  labels:
+    env: test
+    project: roboshop
+    tier: backend
+spec:
+  clusterIp: nodeport
+  selector:
+    labels:
+      env: test
+      project: roboshop
+      tier: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+# headless service
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue-headless
+  labels:
+    env: test
+    project: roboshop
+    tier: backend
+spec:
+  clusterIp: none  #used for interbal communication
+  selector:
+    labels:
+      env: test
+      project: roboshop
+      tier: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+
+# statefulset        
+apiVersion: apps/v1
+kind: statefulset
+mmetadata:
+  name: Service
+  labels:
+    env: test
+    project: roboshop
+    tier: backend
+spec:
+  service: catalogue-headless
+  replicas: 3
+  selector:
+    matchLabels:
+      labels:
+        env: test
+        project: roboshop
+        tier: backend
+  templates:
+    metadata:
+      labels:
+        env: test
+        project: roboshop
+        tier: backend
+    spec:
+      containers:
+        - name: catalogue
+          image: catalogue:v1
