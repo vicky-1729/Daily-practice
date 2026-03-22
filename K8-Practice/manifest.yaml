@@ -66,6 +66,7 @@ spec:
               name: catalogue
 
 
+
 # normal service
 apiVersion: v1
 kind: Service
