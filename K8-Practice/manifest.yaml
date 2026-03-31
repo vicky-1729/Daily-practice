@@ -123,6 +123,7 @@ spec:
   service: catalogue-headless
   replicas: 3
   selector:
+  
     matchLabels:
       labels:
         env: test
