@@ -2,15 +2,15 @@
 # resource "resoucre_type" "custom_name" {
 # }
 
-# resource "aws_instance" "test_server" {
+resource "aws_instance" "test_server" {
 
-#   instance_type          = var.instance_type
-#   ami                    = var.ami_id
-#   vpc_security_group_ids = [aws_security_group.allow-all.id]
+  instance_type          = var.env == "dev" ? "t2.micro" : "t3.small"
+  ami                    = var.ami_id
+  vpc_security_group_ids = [aws_security_group.allow-all.id]
 
-#   tags = var.tags
+  tags = var.tags
 
-# }
+}
 
 resource "aws_security_group" "allow-all" {
   name        = ""

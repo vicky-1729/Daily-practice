@@ -1,8 +1,3 @@
-variable "instance_type" {
-  type    = string
-  default = "t3.micro"
-
-}
 variable "ami_id" {
   type    = string
   default = "ami-0220d79f3f480ecf5"
@@ -24,5 +19,10 @@ variable "cidr_blocks" {
 }
 
 variable "sg_name" {
-    # default = "default-var-name"
+    default = "default-var-name"
+}
+
+variable "env" {
+  type    = string
+  default = "dev"
 }
