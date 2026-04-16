@@ -2,20 +2,18 @@
 # resource "resoucre_type" "custom_name" {
 # }
 
-resource "aws_instance" "test_server" {
-    
-    instance_type = "t3.micro"
-    ami = "ami-0220d79f3f480ecf5"
-    vpc_security_group_ids = [ aws_security_group.allow-all.id ]
+# resource "aws_instance" "test_server" {
 
-    tags = {
-        Name = "Test-Server"
-    }
+#   instance_type          = var.instance_type
+#   ami                    = var.ami_id
+#   vpc_security_group_ids = [aws_security_group.allow-all.id]
 
-}
+#   tags = var.tags
+
+# }
 
 resource "aws_security_group" "allow-all" {
-  name        = "allow_all"
+  name        = ""
   description = "Allow TLS inbound traffic and all outbound traffic"
 
   tags = {
@@ -26,7 +24,7 @@ resource "aws_security_group" "allow-all" {
     from_port        = 0
     to_port          = 0
     protocol         = "-1" # all ports 
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = var.cidr_blocks
     ipv6_cidr_blocks = ["::/0"]
   }
 
