@@ -24,5 +24,5 @@ variable "sg_name" {
 
 variable "env" {
   type    = string
-  default = "dev"
+  default = "prod"
 }
