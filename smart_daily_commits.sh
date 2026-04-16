@@ -8,7 +8,7 @@ LOG_FILE="$LOG_DIR/daily_log.txt"
 export PATH="/usr/bin:/bin:/usr/local/bin"
 
 cd "$REPO_PATH" || exit 1
-mkdir -p "$LOG_DIR"
+mkdir -p "$LOG_DIR" 
 
 # ================= DAY BASED COMMIT COUNT =================
 DAY=$(date +%u)   # 1=Mon ... 7=Sun
