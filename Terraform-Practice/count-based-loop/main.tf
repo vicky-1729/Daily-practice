@@ -3,11 +3,13 @@
 # }
 
 resource "aws_instance" "test_server" {
-
+  count = 4
   instance_type          = var.env == "dev" ? "t2.micro" : "t3.small"
   ami                    = var.ami_id
   vpc_security_group_ids = [aws_security_group.allow-all.id]
-  tags = var.tags
+  tags = {
+    Name = "Dev-${var.instances[count.index]}"
+  }
 
 }
 
