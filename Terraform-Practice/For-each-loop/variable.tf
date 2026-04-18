@@ -28,8 +28,8 @@ variable "env" {
 }
 variable "instances" {
   default = {
-    mongodb = "t2.micro"
+    mongodb   = "t2.micro"
     catalogue = "t3.small"
-    redis = "t2.micro"
+    redis     = "t2.micro"
   }
 }

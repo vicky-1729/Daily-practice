@@ -4,11 +4,11 @@
 
 resource "aws_instance" "test_server" {
   for_each = var.instances
-  instance_type          = var.env == "dev" ? "t2.micro" : "t3.small"
+  instance_type          = each.value
   ami                    = var.ami_id
   vpc_security_group_ids = [aws_security_group.allow-all.id]
   tags = {
-    Name = each.value
+    Name = each.key
   }
 }
 
