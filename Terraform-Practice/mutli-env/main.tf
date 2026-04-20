@@ -4,17 +4,19 @@
 
 resource "aws_instance" "test_server" {
   count = length(var.instances)
-  instance_type          = var.env == "dev" ? "t2.micro" : "t3.small"
+  instance_type          = "t2.micro"
   ami                    = var.ami_id
   vpc_security_group_ids = [aws_security_group.allow-all.id]
-  tags = {
-    Name = "Dev-${var.instances[count.index]}"
-  }
-
+  tags = merge(
+    var.common_tags,
+    {
+      Name = "${var.project}-${var.env}-${var.instances[count.index]}-sever"
+    }
+  )
 }
 
 resource "aws_security_group" "allow-all" {
-  name        = ""
+  name        = var.sg_name
   description = "Allow TLS inbound traffic and all outbound traffic"
 
   tags = {
