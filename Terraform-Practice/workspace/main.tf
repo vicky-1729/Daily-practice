@@ -22,6 +22,7 @@ resource "aws_security_group" "allow-all" {
   tags = {
     Name = "allow_all"
   }
+  
 
   egress {
     from_port        = 0
