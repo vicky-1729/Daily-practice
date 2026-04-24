@@ -1,0 +1,22 @@
+# Deployment files
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: vs
+  name: catalogue
+  labels:
+    project: roboshop
+    env: test
+    tier: app
+spec:
+  replicas: 3
+  selector:
+     matchLabels:
+      project: roboshop
+      env: test
+      tier: app
+  templates:
+    metadata:
+      
+
+  
