@@ -9,7 +9,6 @@ metadata:
     tier: backend
 data:
   mongodb_url: mongo.vsvicky.site
-
 # sceret
 apiVersion: v1
 kind: Sceret
@@ -49,7 +48,6 @@ spec:
         project: roboshop
         tier: backend
     spec:
-    
       containers:
         - name: nginx
           image: nginx:latest
