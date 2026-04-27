@@ -1,0 +1,64 @@
+variable "ami_id" {
+  type    = string
+  default = "ami-0220d79f3f480ecf5"
+
+}
+
+# variable "tags" {
+#   type = map(string)
+#   default = {
+#     purpose = "demo"
+#     name    = "test-server"
+#   }
+
+# }
+
+# variable "instances" {
+#   type = map
+#   default = {
+#     redis = "t2.micro"   # each.key #each.value
+#     mangodb = "t3.micro"
+#     mysql = "t2.micro"
+#   }
+  
+# }
+
+variable "instances" {
+  type = list(string)
+  default = [ "mysql","mongodb","redis" ]
+  
+}
+
+
+variable "tags" {
+  type = map(string)
+  default = {
+    Name = "allow-all"
+  }
+  
+}
+variable "cidr_blocks" {
+  type    = list(string)
+  default = ["0.0.0.0/0"]
+}
+
+variable "sg_name" {
+    default = "default-var-name"
+}
+
+variable "env" {
+  type    = string
+  default = "prod"
+}
+variable "from_port" {
+  type = number
+  default = 0
+}
+variable "to_port" {
+  type = number
+  default = 0
+}
+variable "protocol" {
+  type = string
+  default = "-1"
+}
