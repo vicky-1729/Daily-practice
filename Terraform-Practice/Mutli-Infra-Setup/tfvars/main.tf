@@ -2,7 +2,7 @@
 resource "aws_instance" "roboshop" {
   count = 2
   ami           = var.ami_id # Required: Amazon Machine Image ID
-  instance_type = "t2.micro"              # Required: Instance size
+  instance_type = var.instance_type           # Required: Instance size
   vpc_security_group_ids =[aws_security_group.example.id] 
   tags = merge(
     var.common_tags,{
