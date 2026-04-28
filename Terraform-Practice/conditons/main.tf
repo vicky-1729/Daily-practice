@@ -4,7 +4,7 @@
 
 resource "aws_instance" "test_server" {
 
-  instance_type          = var.env == "prod" ? "t3.micro":"t2.micro"
+  instance_type          = var.env == "prod" ? "t2.micro":"t2.micro"
   ami                    = var.ami_id
   vpc_security_group_ids = [aws_security_group.allow-all.id]
   tags = var.tags
