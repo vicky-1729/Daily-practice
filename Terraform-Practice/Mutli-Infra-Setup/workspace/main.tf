@@ -2,11 +2,11 @@
 resource "aws_instance" "roboshop" {
   count = length(var.Instance_type)
   ami           = var.ami_id # Required: Amazon Machine Image ID
-  instance_type = var.instance_type           # Required: Instance size
+  instance_type = lookup(var.instance_type,terraform.workspace,"t3.micro")         # Required: Instance size
   vpc_security_group_ids =[aws_security_group.example.id] 
   tags = merge(
     var.common_tags,{
-       Name ="${var.Instance_type[count.index]}-${var.env}-server"
+       Name ="${var.Instance_type[count.index]}-${terraform.workspace}-server"
     }
   )
 }
