@@ -9,6 +9,6 @@ metadata:
 # Managed node group configuration
 managedNodeGroups:
   - name: roboshop                    # Node group name
-    instanceTypes: ["t3.medium", "t3.medium"]  # EC2 instance types for worker nodes
-    desiredCapacity: 2             # Number of nodes to launch
-    spot: true                        # Use spot instances for cost savingseksctl version
+    instanceTypes: ["t3.medium"]  # EC2 instance types for worker nodes
+    desiredCapacity: 2                # Number of nodes to launch
+    spot: true                        # Use spot instances for cost savings
