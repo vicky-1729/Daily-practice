@@ -1,0 +1,15 @@
+# pod defination
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+  labels:
+    purpose: Test-service-demo
+    project: roboshop
+    app: backend
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
