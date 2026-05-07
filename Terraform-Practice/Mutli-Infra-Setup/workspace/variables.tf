@@ -6,19 +6,18 @@ variable "ami_id" {
 variable "instance_type" {
     type = map(string)
     default = {
-        dev = "t2.micro"
-        prod = "t3.small"
+      dev = "t2.micro"
+      prod = "xlarge"
     }
 }
 
-variable "Instance_type" {
+variable "Instance_Name" {
     type = list(string)
     default = ["mongodb", "redis"]
     
 }
 # variable "env" {
 #     type = string
-  
 # }
 
 variable "common_tags" {
@@ -29,5 +28,3 @@ variable "common_tags" {
     version= "1.2.1"
   }
 }
-
-

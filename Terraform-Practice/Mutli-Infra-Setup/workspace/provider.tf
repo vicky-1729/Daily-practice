@@ -6,13 +6,12 @@ terraform {
     }
   }
   backend "s3" {
-    # configuration based on the env i will provide that why i am keeping empty
-    
-    bucket         = "vs-terraform-files"
-    key            = "workspace-infra"
+    bucket         = "vs-terraform-statefile"
+    key            = "terraform-workspace"
     region         = "us-east-1"
     encrypt        = true
-    use_lockfile  = true 
+    use_lockfile   = true # Enables native S3 locking
+   
   }
 }
 

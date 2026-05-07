@@ -1,7 +1,7 @@
 module "robpshop" {
   source = "/Users/vicky/Documents/Git-Repos/Daily-practice/Terraform-Practice/m"
   tags = {
-    Name = "xxxxxxx"
+    Name = "my-instance"
   }
-  sg_ids = ["xxxxxxxxx"]
+  sg_ids = ["sg-0b03840d19fc5bb2a"]
 }

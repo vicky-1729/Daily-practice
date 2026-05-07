@@ -1,7 +1,6 @@
 # # security groups
 # resource "resoucre_type" "custom_name" {
 # }
-
 resource "aws_instance" "test_server" {
   count = length(var.instances)
   instance_type          = var.env == "dev" ? "t2.micro" : "t3.small"
@@ -20,6 +19,8 @@ resource "aws_security_group" "allow-all" {
   tags = {
     Name = "allow_all"
   }
+
+  
 
   egress {
     from_port        = 0
