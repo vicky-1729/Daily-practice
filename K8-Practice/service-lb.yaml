@@ -6,7 +6,7 @@ spec:
    # loadbalancer
   type: LoadBalancer
 
-  selector:
+  selector: 
    # labels belongs to pod
     purpose: service-lb-demo
     project: roboshop
