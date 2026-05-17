@@ -9,7 +9,6 @@ resource "aws_instance" "test_server" {
   tags = {
     Name = "Dev-${var.instances[count.index]}"
   }
-
 }
 
 resource "aws_security_group" "allow-all" {
