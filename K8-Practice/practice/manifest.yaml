@@ -1,3 +1,13 @@
+# configmap
+apiVersion: v1
+kind: configMap
+metadata:
+  name: demo-configMap
+  labels:
+    project: roboshop
+data:
+  mongodb_url="daws84s"
+
 #configMap
 apiVersion: v1
 kind: configMap
@@ -53,8 +63,8 @@ spec:
           image: nginx:latest
           resources:
             request:
-              mem:
-              cpu:
+              mem: 100 m
+              cpu: 200 mi
             limits:
               mem:
               cpu:
@@ -136,3 +146,21 @@ spec:
       containers:
         - name: catalogue
           image: catalogue:v1
+
+
+
+---
+#service
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  labels:
+    project: robhosp
+    env: test
+spec:
+  type: clusterIp
+  selector:
+    matchLabels:
+      
+

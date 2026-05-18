@@ -17,6 +17,7 @@ spec:
       targetPort: 80 # continer port
 
 ---
+
 # pod defination
 
 apiVersion: v1
@@ -32,3 +33,45 @@ spec:
   containers:
   - name: nginx
     image: nginx
+
+
+
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  labels:
+    project: roboshop
+    env: test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      #pod labels
+      purpose: service-lb-demo
+      project: roboshop
+      app: backend
+  templates:
+    metadata:
+      labels:
+        purpose: service-lb-demo
+        project: roboshop
+        app: backend
+    spec:
+      containers:
+        - name: 
+          image:
+          resources:
+            request:
+              cpu:
+              mem:
+            limits:
+              cpu:
+              mem:
+          envFrom:
+            configMapRef:
+              name:
+            configScretRef:
+             name
