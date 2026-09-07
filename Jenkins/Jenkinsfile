@@ -1,0 +1,19 @@
+pipeline{
+    options{
+
+    }
+    stages{
+        stage('Build')
+        {
+            steps{
+                echo " Welcome back guru...!"
+            }
+        }
+        stage('Deploy'){
+            steps{
+                echo "Now deploying..!"
+            }
+
+        }
+    }
+}
