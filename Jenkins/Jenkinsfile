@@ -5,7 +5,9 @@ pipeline {
     environment {
         course = 'Jenkins'
     }
-
+    // options{
+    //     {param.hello}
+    // }
     stages {
 
         stage('Build') {
@@ -20,11 +22,27 @@ pipeline {
         }
 
         stage('Configure') {
+
             steps {
-                echo 'All is well'
+                script {
+
+                    def userInput = input(
+                        message: 'Do you want to proceed with deployment?',
+                        ok: 'Approve',
+                        parameters: [
+                            string(
+                                name: 'USR',
+                                defaultValue: '',
+                                description: 'Enter your name'
+                            )
+                        ]
+                    )
+
+                    echo "Approval received from: ${userInput}"
+                    echo 'All is well'
+                }
             }
         }
-
         stage('Test') {
             steps {
                 echo 'Testing is good'
