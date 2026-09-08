@@ -1,21 +1,40 @@
 pipeline {
 
-agent any
+    agent any
 
-stages {
+    stages {
 
-    stage('Build') {
-        steps {
-            echo 'Welcome back guru...!'
+        stage('Build') {
+            steps {
+                echo 'This is the 1st stage'
+            }
+        }
+
+        stage('Configure') {
+            steps {
+                echo 'All is well'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing is good'
+            }
         }
     }
 
-    stage('Deploy') {
-        steps {
-            echo 'Now deploying..!'
+    post {
+
+        always {
+            echo 'Pipeline execution completed. Check the status below.'
+        }
+
+        success {
+            echo 'Pipeline was successful.'
+        }
+
+        failure {
+            echo 'Pipeline failed.'
         }
     }
-
-}
-
 }
