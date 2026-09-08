@@ -1,12 +1,23 @@
 pipeline {
 
-    agent any
+    agent {
+        label 'AGENT-1'
+    }
+
+    environment {
+        course = 'Jenkins'
+    }
 
     stages {
 
         stage('Build') {
             steps {
-                echo 'This is the 1st stage'
+                script {
+                    sh """
+                        echo "Hello brother"
+                        env
+                    """
+                }
             }
         }
 
